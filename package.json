@@ -1,0 +1,38 @@
+{
+  "name": "react-native-calendar-resource",
+  "version": "1.0.2",
+  "description": "A fully customizable, type-safe resource-based calendar component for React Native",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "npm run build",
+    "test": "echo \"No tests yet\" && exit 0"
+  },
+  "keywords": [
+    "react-native",
+    "calendar",
+    "schedule",
+    "resource",
+    "booking",
+    "typescript",
+    "expo"
+  ],
+  "author": "AbdelRahman Sobhy",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/abdosobhy1/react-native-calendar-resource"
+  },
+  "peerDependencies": {
+    "react": ">=18.0.0",
+    "react-native": ">=0.70.0",
+    "date-fns": ">=3.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.1.0",
+    "@types/react-native": "^0.73.0",
+    "typescript": "^5.9.2"
+  },
+  "files": ["dist", "README.md", "LICENSE"]
+}

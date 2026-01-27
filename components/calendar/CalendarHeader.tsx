@@ -1,4 +1,3 @@
-import { MaterialIcons } from "@expo/vector-icons";
 import { addDays, format, subDays } from "date-fns";
 import { Pressable, Text, View } from "react-native";
 import { CalendarTimeConfig } from "../../types/calendar";
@@ -128,11 +127,7 @@ export function CalendarHeader({
                 justifyContent: "center",
                 backgroundColor: "rgba(38, 38, 38, 0.75)",
               }}>
-              <MaterialIcons
-                name="chevron-left"
-                size={20}
-                color={prevDisabled ? "#626262" : "#fefefe"}
-              />
+              <Text style={{ color: prevDisabled ? "#626262" : "#fefefe", fontSize: 24, fontWeight: "bold" }}>‹</Text>
             </Pressable>
             <Text style={{ color: "#fefefe", fontSize: 16, fontWeight: "600" }}>
               {format(date, dateFormat)}
@@ -148,11 +143,7 @@ export function CalendarHeader({
                 alignItems: "center",
                 justifyContent: "center",
               }}>
-              <MaterialIcons
-                name="chevron-right"
-                size={20}
-                color={nextDisabled ? "#626262" : "#fefefe"}
-              />
+              <Text style={{ color: nextDisabled ? "#626262" : "#fefefe", fontSize: 24, fontWeight: "bold" }}>›</Text>
             </Pressable>
           </>
         ) : (

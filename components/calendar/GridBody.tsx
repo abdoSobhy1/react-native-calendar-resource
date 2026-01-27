@@ -1,6 +1,5 @@
-import { MaterialIcons } from "@expo/vector-icons";
 import { useMemo } from "react";
-import { Pressable, View } from "react-native";
+import { Pressable, Text, View } from "react-native";
 import {
   CalendarDimensions,
   CalendarEvent,
@@ -118,7 +117,7 @@ export function GridBody<TEvent = any, TResource = any, TUnavailable = any>({
                   justifyContent: "center",
                   alignItems: "center",
                 }}>
-                <MaterialIcons name="add" size={14} color="#474747" />
+                <Text style={{ color: "#474747", fontSize: 20, fontWeight: "300" }}>+</Text>
               </Pressable>
             );
           })}

@@ -295,12 +295,6 @@ interface BookingData {
 
 MIT
 
-- The tab bar remains visible while navigating deeper into Explore-related screens
-- Navigation context is preserved
-- Platform-native gestures and transitions are maintained
-
-Headers are disabled at the stack level and selectively enabled per screen to match the Figma design and avoid default iOS -Liquid Glass- system back button styling.
-
 ---
 
 **Author:** Abdelrahman Sobhy

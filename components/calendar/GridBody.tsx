@@ -9,10 +9,10 @@ import {
   UnavailableSlot,
 } from "../../types/calendar";
 
-type GridBodyProps<TEvent = any, TResource = any, TUnavailable = any> = {
-  resources: Resource<TResource>[];
-  events: CalendarEvent<TEvent>[];
-  unavailableSlots: UnavailableSlot<TUnavailable>[];
+type GridBodyProps = {
+  resources: Resource[];
+  events: CalendarEvent[];
+  unavailableSlots: UnavailableSlot[];
   onSlotPress?: (hour: number, resourceId: string, date: Date) => void;
   date: Date;
   timeConfig: CalendarTimeConfig;
@@ -20,7 +20,7 @@ type GridBodyProps<TEvent = any, TResource = any, TUnavailable = any> = {
   styles?: CalendarStyles;
 };
 
-export function GridBody<TEvent = any, TResource = any, TUnavailable = any>({
+export function GridBody({
   resources,
   events,
   unavailableSlots,
@@ -29,7 +29,7 @@ export function GridBody<TEvent = any, TResource = any, TUnavailable = any>({
   timeConfig,
   dimensions,
   styles,
-}: GridBodyProps<TEvent, TResource, TUnavailable>) {
+}: GridBodyProps) {
   const hoursArray = useMemo(() => {
     const result: number[] = [];
     for (
@@ -117,7 +117,10 @@ export function GridBody<TEvent = any, TResource = any, TUnavailable = any>({
                   justifyContent: "center",
                   alignItems: "center",
                 }}>
-                <Text style={{ color: "#474747", fontSize: 20, fontWeight: "300" }}>+</Text>
+                <Text
+                  style={{ color: "#474747", fontSize: 20, fontWeight: "300" }}>
+                  +
+                </Text>
               </Pressable>
             );
           })}

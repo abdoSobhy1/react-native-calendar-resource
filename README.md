@@ -14,6 +14,8 @@ A fully customizable, type-safe resource-based calendar component for React Nati
 - 🎭 **Style Customization** - Full control over colors and appearance
 - 👆 **Interactive** - Handle slot, event, and resource press events
 - 🔄 **Synchronized Scrolling** - Header and time column scroll with the grid
+- 🎯 **Drag and Drop** - Long-press and drag events to reschedule (optional)
+- 🔍 **Pinch to Zoom** - Zoom in/out with focal point support (optional)
 
 ---
 
@@ -30,8 +32,12 @@ yarn add react-native-calendar-resource
 Ensure you have the required peer dependencies:
 
 ```bash
-npm install  date-fns
+npm install date-fns
+# or
+yarn add date-fns
 ```
+
+**Note:** For Expo projects, these are typically already installed. For bare React Native projects, follow the [react-native-gesture-handler](https://docs.swmansion.com/react-native-gesture-handler/docs/fundamentals/installation) and [react-native-reanimated](https://docs.swmansion.com/react-native-reanimated/docs/fundamentals/getting-started/) installation guides.
 
 ---
 
@@ -80,26 +86,33 @@ function MyCalendar() {
 
 ### Optional Props
 
-| Prop                     | Type                               | Default                                              | Description                            |
-| ------------------------ | ---------------------------------- | ---------------------------------------------------- | -------------------------------------- |
-| `unavailableSlots`       | `UnavailableSlot<T>[]`             | `[]`                                                 | Slots that are unavailable             |
-| `timeConfig`             | `CalendarTimeConfig`               | `{ startHour: 9, endHour: 24, timeFormat: "HH:mm" }` | Time configuration                     |
-| `dimensions`             | `Partial<CalendarDimensions>`      | `{ resourceWidth: 64, hourHeight: 64 }`              | Grid dimensions                        |
-| `styles`                 | `CalendarStyles`                   | -                                                    | Overall calendar styling               |
-| `eventStyles`            | `CalendarEventStyles`              | -                                                    | Event-specific styling                 |
-| `unavailableStyles`      | `UnavailableSlotStyles`            | -                                                    | Unavailable slot styling               |
-| `onSlotPress`            | `(hour, resourceId, date) => void` | -                                                    | Called when empty slot is pressed      |
-| `onEventPress`           | `(event) => void`                  | -                                                    | Called when event is pressed           |
-| `onResourcePress`        | `(resource) => void`               | -                                                    | Called when resource header is pressed |
-| `renderEvent`            | `(event, dimensions) => ReactNode` | -                                                    | Custom event renderer                  |
-| `renderResourceHeader`   | `(resource) => ReactNode`          | -                                                    | Custom resource header renderer        |
-| `renderTimeSlot`         | `(hour) => ReactNode`              | -                                                    | Custom time slot renderer              |
-| `renderUnavailableSlot`  | `(slot, dimensions) => ReactNode`  | -                                                    | Custom unavailable slot renderer       |
-| `showHeader`             | `boolean`                          | `true`                                               | Show date header                       |
-| `showTimeColumn`         | `boolean`                          | `true`                                               | Show time column                       |
-| `showResourceHeaders`    | `boolean`                          | `true`                                               | Show resource headers                  |
-| `enableHorizontalScroll` | `boolean`                          | `true`                                               | Enable horizontal scrolling            |
-| `enableVerticalScroll`   | `boolean`                          | `true`                                               | Enable vertical scrolling              |
+| Prop                     | Type                                   | Default                                              | Description                                 |
+| ------------------------ | -------------------------------------- | ---------------------------------------------------- | ------------------------------------------- |
+| `unavailableSlots`       | `UnavailableSlot<T>[]`                 | `[]`                                                 | Slots that are unavailable                  |
+| `timeConfig`             | `CalendarTimeConfig`                   | `{ startHour: 9, endHour: 24, timeFormat: "HH:mm" }` | Time configuration                          |
+| `dimensions`             | `Partial<CalendarDimensions>`          | `{ resourceWidth: 64, hourHeight: 64 }`              | Grid dimensions                             |
+| `styles`                 | `CalendarStyles`                       | -                                                    | Overall calendar styling                    |
+| `eventStyles`            | `CalendarEventStyles`                  | -                                                    | Event-specific styling                      |
+| `unavailableStyles`      | `UnavailableSlotStyles`                | -                                                    | Unavailable slot styling                    |
+| `onSlotPress`            | `(hour, resourceId, date) => void`     | -                                                    | Called when empty slot is pressed           |
+| `onEventPress`           | `(event) => void`                      | -                                                    | Called when event is pressed                |
+| `onEventDrop`            | `(droppedData, originalEvent) => void` | -                                                    | Called when event is dropped after dragging |
+| `onResourcePress`        | `(resource) => void`                   | -                                                    | Called when resource header is pressed      |
+| `renderEvent`            | `(event, dimensions) => ReactNode`     | -                                                    | Custom event renderer                       |
+| `renderResourceHeader`   | `(resource) => ReactNode`              | -                                                    | Custom resource header renderer             |
+| `renderTimeSlot`         | `(hour) => ReactNode`                  | -                                                    | Custom time slot renderer                   |
+| `renderUnavailableSlot`  | `(slot, dimensions) => ReactNode`      | -                                                    | Custom unavailable slot renderer            |
+| `showHeader`             | `boolean`                              | `true`                                               | Show date header                            |
+| `showTimeColumn`         | `boolean`                              | `true`                                               | Show time column                            |
+| `showResourceHeaders`    | `boolean`                              | `true`                                               | Show resource headers                       |
+| `enableHorizontalScroll` | `boolean`                              | `true`                                               | Enable horizontal scrolling                 |
+| `enableVerticalScroll`   | `boolean`                              | `true`                                               | Enable vertical scrolling                   |
+| `enableDragAndDrop`      | `boolean`                              | `false`                                              | Enable drag and drop for events             |
+| `zoomEnabled`            | `boolean`                              | `false`                                              | Enable pinch-to-zoom gesture ⚠️ Experimental |
+| `maxZoom`                | `number`                               | `3`                                                  | Maximum zoom level (3 = 300%)               |
+| `initialZoom`            | `number`                               | `1`                                                  | Initial zoom level (1 = 100%)               |
+| `snapBack`               | `boolean`                              | `false`                                              | Auto-return to initial zoom after gesture   |
+| `snapBackDelay`          | `number`                               | `1000`                                               | Delay before snap-back in milliseconds      |
 
 ---
 
@@ -146,6 +159,98 @@ type CalendarDimensions = {
 ---
 
 ## Examples
+
+### Drag and Drop Events
+
+Enable event rescheduling by long-pressing and dragging:
+
+```tsx
+import { useState } from "react";
+import { Calendar, CalendarEvent } from "react-native-calendar-resource";
+
+function MyCalendar() {
+  const [events, setEvents] = useState<CalendarEvent[]>([
+    {
+      id: "evt1",
+      title: "Team Meeting",
+      resourceId: "1",
+      startHour: 10,
+      endHour: 11.5,
+      color: "#3b82f6",
+    },
+  ]);
+
+  return (
+    <Calendar
+      date={new Date()}
+      resources={resources}
+      events={events}
+      enableDragAndDrop={true}
+      onEventDrop={(droppedData, originalEvent) => {
+        // Update event with new time/resource
+        setEvents((prev) =>
+          prev.map((event) =>
+            event.id === droppedData.eventId
+              ? {
+                  ...event,
+                  resourceId: droppedData.newResourceId,
+                  startHour: droppedData.newStartHour,
+                  endHour: droppedData.newEndHour,
+                }
+              : event,
+          ),
+        );
+
+        console.log("Event moved:", {
+          from: {
+            resource: originalEvent.resourceId,
+            time: `${originalEvent.startHour}-${originalEvent.endHour}`,
+          },
+          to: {
+            resource: droppedData.newResourceId,
+            time: `${droppedData.newStartHour}-${droppedData.newEndHour}`,
+          },
+        });
+      }}
+    />
+  );
+}
+```
+
+**How it works:**
+
+- Long-press an event for 500ms to start dragging
+- Drag the event to a new resource or time slot
+- Events snap to 30-minute intervals
+- Visual feedback shows the event being dragged (opacity, scale, border)
+- The `onEventDrop` callback receives both the new position and original event data
+
+### Pinch to Zoom
+
+> **⚠️ EXPERIMENTAL FEATURE**: Pinch-to-zoom is currently experimental and may have performance or gesture detection issues. We recommend waiting for a stable release before using in production.
+
+Enable pinch-to-zoom for better visibility of events:
+
+```tsx
+<Calendar
+  date={new Date()}
+  resources={resources}
+  events={events}
+  zoomEnabled={true}
+  maxZoom={3}
+  initialZoom={1}
+  snapBack={true}
+  snapBackDelay={1000}
+/>
+```
+
+**How it works:**
+
+- Pinch with two fingers to zoom in/out (min: 1x, max: configurable)
+- Zoom centers on the focal point between your fingers
+- Scroll position adjusts automatically to keep content in view
+- Optional snap-back returns to initial zoom after a delay
+- Smooth animations for zoom transitions
 
 ### Custom Time Range
 

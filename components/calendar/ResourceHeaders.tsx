@@ -6,21 +6,21 @@ import {
   Resource,
 } from "../../types/calendar";
 
-type ResourceHeadersProps<T = any> = {
-  resources: Resource<T>[];
+type ResourceHeadersProps = {
+  resources: Resource[];
   scrollRef: React.RefObject<ScrollView | null>;
   dimensions: CalendarDimensions;
-  renderResourceHeader?: RenderResourceHeaderFunction<T>;
-  onResourcePress?: (resource: Resource<T>) => void;
+  renderResourceHeader?: RenderResourceHeaderFunction;
+  onResourcePress?: (resource: Resource) => void;
 };
 
-export function ResourceHeaders<T = any>({
+export function ResourceHeaders({
   resources,
   scrollRef,
   dimensions,
   renderResourceHeader,
   onResourcePress,
-}: ResourceHeadersProps<T>) {
+}: ResourceHeadersProps) {
   return (
     <View style={{ flexDirection: "row", zIndex: 10 }}>
       <View

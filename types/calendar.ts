@@ -1,31 +1,35 @@
 import { ReactNode } from "react";
 
 // Core data types
-export type Resource<T = any> = {
+export type Resource = {
   id: string;
   label: string;
-  data?: T; // Additional custom data
 };
 
-export type CalendarEvent<T = any> = {
+export type CalendarEvent = {
   id: string;
   title: string;
   resourceId: string;
   startHour: number;
   endHour: number;
   color?: string;
-  data?: T; // Additional custom data
+};
+
+export type DroppedEventData = {
+  eventId: string;
+  newResourceId: string;
+  newStartHour: number;
+  newEndHour: number;
 };
 
 export type UnavailableType = "reserved" | "offHours" | "disabled";
 
-export type UnavailableSlot<T = any> = {
+export type UnavailableSlot = {
   id: string;
   resourceId: string;
   startHour: number;
   endHour: number;
   type: UnavailableType;
-  data?: T; // Additional custom data
 };
 
 // Configuration types
@@ -88,31 +92,29 @@ export type UnavailableSlotStyles = {
 };
 
 // Render function types
-export type RenderEventFunction<T = any> = (
-  event: CalendarEvent<T>,
+export type RenderEventFunction = (
+  event: CalendarEvent,
   dimensions: { width: number; height: number },
 ) => ReactNode;
 
-export type RenderResourceHeaderFunction<T = any> = (
-  resource: Resource<T>,
-) => ReactNode;
+export type RenderResourceHeaderFunction = (resource: Resource) => ReactNode;
 
 export type RenderTimeSlotFunction = (hour: number) => ReactNode;
 
-export type RenderUnavailableSlotFunction<T = any> = (
-  slot: UnavailableSlot<T>,
+export type RenderUnavailableSlotFunction = (
+  slot: UnavailableSlot,
   dimensions: { width: number; height: number },
 ) => ReactNode;
 
 // Main props type
-export type CalendarProps<TEvent = any, TResource = any, TUnavailable = any> = {
+export type CalendarProps = {
   // Required props
   date: Date;
-  resources: Resource<TResource>[];
-  events: CalendarEvent<TEvent>[];
+  resources: Resource[];
+  events: CalendarEvent[];
 
   // Optional data
-  unavailableSlots?: UnavailableSlot<TUnavailable>[];
+  unavailableSlots?: UnavailableSlot[];
 
   // Configuration
   timeConfig?: CalendarTimeConfig;
@@ -121,11 +123,22 @@ export type CalendarProps<TEvent = any, TResource = any, TUnavailable = any> = {
   eventStyles?: CalendarEventStyles;
   unavailableStyles?: UnavailableSlotStyles;
 
+  // Zoom configuration
+  zoomEnabled?: boolean;
+  maxZoom?: number;
+  initialZoom?: number;
+  snapBack?: boolean;
+  snapBackDelay?: number;
+
   // Interaction handlers
   onSlotPress?: (hour: number, resourceId: string, date: Date) => void;
-  onEventPress?: (event: CalendarEvent<TEvent>) => void;
-  onResourcePress?: (resource: Resource<TResource>) => void;
+  onEventPress?: (event: CalendarEvent) => void;
+  onResourcePress?: (resource: Resource) => void;
   onDateChange?: (date: Date) => void;
+  onEventDrop?: (
+    droppedData: DroppedEventData,
+    originalEvent: CalendarEvent,
+  ) => void;
 
   // Date range constraints
   minDate?: Date;
@@ -133,10 +146,10 @@ export type CalendarProps<TEvent = any, TResource = any, TUnavailable = any> = {
   allowPastDates?: boolean;
 
   // Custom render functions
-  renderEvent?: RenderEventFunction<TEvent>;
-  renderResourceHeader?: RenderResourceHeaderFunction<TResource>;
+  renderEvent?: RenderEventFunction;
+  renderResourceHeader?: RenderResourceHeaderFunction;
   renderTimeSlot?: RenderTimeSlotFunction;
-  renderUnavailableSlot?: RenderUnavailableSlotFunction<TUnavailable>;
+  renderUnavailableSlot?: RenderUnavailableSlotFunction;
 
   // Feature flags
   showHeader?: boolean;
@@ -145,6 +158,7 @@ export type CalendarProps<TEvent = any, TResource = any, TUnavailable = any> = {
   enableHorizontalScroll?: boolean;
   enableVerticalScroll?: boolean;
   showDateNavigation?: boolean;
+  enableDragAndDrop?: boolean;
   dateFormat?: string;
 
   // Accessibility

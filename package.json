@@ -6,6 +6,7 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc -p tsconfig.package.json",
+    "watch": "tsc -p tsconfig.package.json --watch",
     "prepublishOnly": "npm run build",
     "test": "echo \"No tests yet\" && exit 0"
   },
@@ -27,11 +28,17 @@
   "peerDependencies": {
     "react": ">=18.0.0",
     "react-native": ">=0.70.0",
-    "date-fns": ">=3.0.0"
+    "date-fns": ">=3.0.0",
+    "react-native-gesture-handler": ">=2.9.0",
+    "react-native-reanimated": ">=2.14.0"
   },
   "devDependencies": {
     "@types/react": "^19.1.0",
     "@types/react-native": "^0.73.0",
+    "react": "^18.2.0",
+    "react-native": "^0.73.0",
+    "react-native-gesture-handler": "^2.14.0",
+    "react-native-reanimated": "^3.6.0",
     "typescript": "^5.9.2"
   },
   "files": [

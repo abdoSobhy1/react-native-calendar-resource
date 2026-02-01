@@ -31,7 +31,3 @@ Thumbs.db
 .expo/
 .expo-shared/
 
-# Documentation (keep in repo but not in npm package)
-CALENDAR_STRUCTURE.md
-CUSTOMIZATION_GUIDE.md
-PUBLISHING.md

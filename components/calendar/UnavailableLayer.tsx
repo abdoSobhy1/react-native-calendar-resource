@@ -9,13 +9,13 @@ import {
   UnavailableSlotStyles,
 } from "../../types/calendar";
 
-type UnavailableLayerProps<TResource = any, TUnavailable = any> = {
-  unavailableSlots: UnavailableSlot<TUnavailable>[];
-  resources: Resource<TResource>[];
+type UnavailableLayerProps = {
+  unavailableSlots: UnavailableSlot[];
+  resources: Resource[];
   timeConfig: CalendarTimeConfig;
   dimensions: CalendarDimensions;
   unavailableStyles?: UnavailableSlotStyles;
-  renderUnavailableSlot?: RenderUnavailableSlotFunction<TUnavailable>;
+  renderUnavailableSlot?: RenderUnavailableSlotFunction;
 };
 
 function DiagonalStripes({
@@ -71,14 +71,14 @@ function DiagonalStripes({
   );
 }
 
-export function UnavailableLayer<TResource = any, TUnavailable = any>({
+export function UnavailableLayer<TResource = unknown, TUnavailable = unknown>({
   unavailableSlots,
   resources,
   timeConfig,
   dimensions,
   unavailableStyles,
   renderUnavailableSlot,
-}: UnavailableLayerProps<TResource, TUnavailable>) {
+}: UnavailableLayerProps) {
   const positionedSlots = useMemo(() => {
     return unavailableSlots
       .map((slot) => {
@@ -100,7 +100,7 @@ export function UnavailableLayer<TResource = any, TUnavailable = any>({
         return { slot, topPosition, leftPosition, blockWidth, blockHeight };
       })
       .filter(Boolean) as {
-      slot: UnavailableSlot<TUnavailable>;
+      slot: UnavailableSlot;
       topPosition: number;
       leftPosition: number;
       blockWidth: number;

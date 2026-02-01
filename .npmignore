@@ -1,6 +1,15 @@
-# Ignore build output
-dist/
-*.tgz
+# Source files (only publish compiled dist/)
+components/
+types/
+tsconfig.package.json
+tsconfig.json
+
+# Development files
+.github/
+.yalc/
+yalc.lock
+PUBLISHING.md
+DEVELOPMENT.md
 
 # Ignore demo app files when building package
 app/
@@ -11,6 +20,11 @@ babel.config.js
 metro.config.js
 tailwind.config.js
 expo-env.d.ts
+
+# Test files
+*.test.ts
+*.test.tsx
+__tests__/
 
 # Node modules
 node_modules/
@@ -30,4 +44,3 @@ Thumbs.db
 # Expo
 .expo/
 .expo-shared/
-

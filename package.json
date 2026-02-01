@@ -25,6 +25,10 @@
     "type": "git",
     "url": "https://github.com/abdosobhy1/react-native-calendar-resource"
   },
+  "homepage": "https://github.com/abdosobhy1/react-native-calendar-resource#readme",
+  "bugs": {
+    "url": "https://github.com/abdosobhy1/react-native-calendar-resource/issues"
+  },
   "peerDependencies": {
     "react": ">=18.0.0",
     "react-native": ">=0.70.0",
